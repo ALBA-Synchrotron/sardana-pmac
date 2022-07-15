@@ -45,12 +45,12 @@ class TurboPmacController(MotorController):
     """
 
     MaxDevice = 32
-    class_prop = {
+    ctrl_properties = {
         'PmacEthDevName': {Type: str,
                            Description: 'Device name of the PmacEth DS'}
     }
 
-    motor_extra_attributes = {  # First Word
+    axis_attributes = {  # First Word
         "MotorActivated": {Type: bool,
                            Access: DataAccess.ReadOnly},
         "NegativeEndLimitSet": {Type: bool,
@@ -144,16 +144,11 @@ class TurboPmacController(MotorController):
         "WarningFollowingError": {Type: bool,
                                   Access: DataAccess.ReadOnly},
         "InPosition": {Type: bool,
-                       Access: DataAccess.ReadOnly}}
+                       Access: DataAccess.ReadOnly},
 
-    cs_extra_attributes = {
         "MotionProgramRunning": {Type: bool,
                                  Access: DataAccess.ReadOnly}
     }
-
-    ctrl_extra_attributes = {}
-    ctrl_extra_attributes.update(motor_extra_attributes)
-    ctrl_extra_attributes.update(cs_extra_attributes)
 
     def __init__(self, inst, props, *args, **kwargs):
         MotorController.__init__(self, inst, props, *args, **kwargs)
@@ -369,13 +364,14 @@ class TurboPmacController(MotorController):
             position *= self.attributes[axis]["step_per_unit"]
             self.pmacEth.command_inout("JogToPos", [axis, position])
 
-    def SetPar(self, axis, name, value):
+    def SetAxisPar(self, axis, parameter, value):
         """ Set the standard pool motor parameters.
         @param axis to set the parameter
-        @param name of the parameter
+        @param parameter name
         @param value to be set
         """
-        if name.lower() == "velocity":
+        name = parameter.lower()
+        if name == "velocity":
             pmacVelocity = (
                 value * self.attributes[axis]["step_per_unit"]) / 1000
             self._log.debug("setting velocity to: %f" % pmacVelocity)
@@ -390,7 +386,7 @@ class TurboPmacController(MotorController):
                                 pmacVelocity)
                 raise
 
-        elif name.lower() == "acceleration" or name.lower() == "deceleration":
+        elif name in ["acceleration", "deceleration"]:
             # here we convert acceleration time from sec(Sardana standard) to
             # msec(TurboPmac expected unit)
             pmacAcceleration = value * 1000
@@ -405,19 +401,20 @@ class TurboPmacController(MotorController):
                                 "failed.", axis, name, value, ivar,
                                 pmacAcceleration)
                 raise
-        elif name.lower() == "step_per_unit":
+        elif name == "step_per_unit":
             self.attributes[axis]["step_per_unit"] = float(value)
-        elif name.lower() == "base_rate":
+        elif name == "base_rate":
             self.attributes[axis]["base_rate"] = float(value)
         # @todo implement base_rate
 
-    def GetPar(self, axis, name):
+    def GetAxisPar(self, axis, parameter):
         """ Get the standard pool motor parameters.
         @param axis to get the parameter
-        @param name of the parameter to get the value
+        @param parameter to get the value
         @return the value of the parameter
         """
-        if name.lower() == "velocity":
+        name = parameter.lower()
+        if name == "velocity":
             ivar = int("%d22" % axis)
             try:
                 pmacVelocity = self.pmacEth.command_inout("GetIVariable", ivar)
@@ -432,7 +429,7 @@ class TurboPmacController(MotorController):
                 self.attributes[axis]["step_per_unit"]
             return sardanaVelocity
 
-        elif name.lower() == "acceleration" or name.lower() == "deceleration":
+        elif name in ["acceleration", "deceleration"]:
             # pmac acceleration time from msec(returned by TurboPmac) to
             # sec(Sardana standard)
             ivar = int("%d20" % axis)
@@ -447,10 +444,10 @@ class TurboPmacController(MotorController):
             sardanaAcceleration = float(pmacAcceleration) / 1000
             return sardanaAcceleration
 
-        elif name.lower() == "step_per_unit":
+        elif name == "step_per_unit":
             return self.attributes[axis]["step_per_unit"]
             # @todo implement base_rate
-        elif name.lower() == "base_rate":
+        elif name == "base_rate":
             return self.attributes[axis]["base_rate"]
         else:
             return None
@@ -476,20 +473,21 @@ class TurboPmacController(MotorController):
     def DefinePosition(self, axis, value):
         pass
 
-    def GetExtraAttributePar(self, axis, name):
+    def GetAxisExtraPar(self, axis, parameter):
         """ Get Pmac axis particular parameters.
         @param axis to get the parameter
-        @param name of the parameter to retrive
+        @param parameter to retrive
         @return the value of the parameter
         """
-        return self.attributes[axis][name]
+        return self.attributes[axis][parameter]
 
-    def SetExtraAttributePar(self, axis, name, value):
+    def SetAxisExtraPar(self, axis, parameter, value):
         """ Set Pmac axis particular parameters.
         @param axis to set the parameter
-        @param name of the parameter
+        @param parameter
         @param value to be set
         """
+        name = parameter.lower()
         if name == "AmplifierEnabled":
             if value:
                 self.pmacEth.command_inout("JogStop", [axis])
