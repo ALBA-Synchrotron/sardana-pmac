@@ -33,7 +33,7 @@
 ###########################################################################
 
 import PyTango
-from .TurboPmacCtrl import TurboPmacController
+from sardana_pmac.ctrl.TurboPmacCtrl import TurboPmacController
 
 
 class LtpTurboPmacController(TurboPmacController):
