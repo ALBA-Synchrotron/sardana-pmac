@@ -33,7 +33,7 @@
 ###########################################################################
 
 import PyTango
-from .PmacCtrl import PmacController
+from sardana_pmac.ctrl.PmacCtrl import PmacController
 
 
 class PmacLTPController(PmacController):
