@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sardana-alba",
-    version="0.0.0",
+    version="0.1.0",
     description="Pmac Sardana plugins (controllers, macros, tools)",
     author="ALBA controls team",
     author_email="controls@cells.es",
