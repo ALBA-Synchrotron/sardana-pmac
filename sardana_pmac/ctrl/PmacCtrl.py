@@ -33,16 +33,18 @@
 ###########################################################################
 
 import PyTango
-from sardana.pool.controller import MotorController
+from sardana.pool.controller import MotorController, Type, Description, \
+    DataAccess, Access
 
 
 class PmacController(MotorController):
     """This class is the Tango Sardana motor controller for the Pmac motor
      controller device."""
     MaxDevice = 32
-    class_prop = {'PmacEthDevName': {
-        'Type': 'PyTango.DevString',
-        'Description': 'Device name of the PmacEth DS'}}
+    ctrl_properties = {
+        'PmacEthDevName': {Type: str,
+                           Description: 'Device name of the PmacEth DS'}}
+
     attributeNames = ["motoractivated", "negativeendlimitset",
                       "positiveendlimitset", "handwheelenabled",
                       "phasedmotor", "openloopmode", "runningdefine-timemove",
@@ -60,70 +62,67 @@ class PmacController(MotorController):
                       "warningfollowingerror", "inposition",
                       "motionprogramrunning"]
 
-    motor_extra_attributes = {
-        "MotorActivated": {'Type': 'PyTango.DevBoolean',
-                           'R/W Type': 'PyTango.READ'},
-        "NegativeEndLimitSet": {'Type': 'PyTango.DevBoolean',
-                                'R/W Type': 'PyTango.READ'},
-        "PositiveEndLimitSet": {'Type': 'PyTango.DevBoolean',
-                                'R/W Type': 'PyTango.READ'},
-        "HandwheelEnabled": {'Type': 'PyTango.DevBoolean',
-                             'R/W Type': 'PyTango.READ'},
-        "PhasedMotor": {'Type': 'PyTango.DevBoolean',
-                        'R/W Type': 'PyTango.READ'},
-        "OpenLoopMode": {'Type': 'PyTango.DevBoolean',
-                         'R/W Type': 'PyTango.READ'},
-        "RunningDefine-timeMove": {'Type': 'PyTango.DevBoolean',
-                                   'R/W Type': 'PyTango.READ'},
-        "IntegrationMode": {'Type': 'PyTango.DevBoolean',
-                            'R/W Type': 'PyTango.READ'},
-        "DwellInProgress": {'Type': 'PyTango.DevBoolean',
-                            'R/W Type': 'PyTango.READ'},
-        "DataBlockError": {'Type': 'PyTango.DevBoolean',
-                           'R/W Type': 'PyTango.READ'},
-        "DesiredVelocityZero": {'Type': 'PyTango.DevBoolean',
-                                'R/W Type': 'PyTango.READ'},
-        "AbortDeceleration": {'Type': 'PyTango.DevBoolean',
-                              'R/W Type': 'PyTango.READ'},
-        "BlockRequest": {'Type': 'PyTango.DevBoolean',
-                         'R/W Type': 'PyTango.READ'},
-        "HomeSearchInProgress": {'Type': 'PyTango.DevBoolean',
-                                 'R/W Type': 'PyTango.READ'},
-        "AssignedToCoordinateSystem": {'Type': 'PyTango.DevBoolean',
-                                       'R/W Type': 'PyTango.READ'},
-        "CoordinateSystem": {'Type': 'PyTango.DevLong',
-                             'R/W Type': 'PyTango.READ'},
-        "AmplifierEnabled": {'Type': 'PyTango.DevBoolean',
-                             'R/W Type': 'PyTango.READ_WRITE'},
-        "StoppedOnPositionLimit": {'Type': 'PyTango.DevBoolean',
-                                   'R/W Type': 'PyTango.READ'},
-        "HomeComplete": {'Type': 'PyTango.DevBoolean',
-                         'R/W Type': 'PyTango.READ'},
-        "PhasingSearchError": {'Type': 'PyTango.DevBoolean',
-                               'R/W Type': 'PyTango.READ'},
-        "TriggerMove": {'Type': 'PyTango.DevBoolean',
-                        'R/W Type': 'PyTango.READ'},
-        "IntegratedFatalFollowingError": {'Type': 'PyTango.DevBoolean',
-                                          'R/W Type': 'PyTango.READ'},
-        "I2T_amplifierFaultError": {'Type': 'PyTango.DevBoolean',
-                                    'R/W Type': 'PyTango.READ'},
-        "BacklashDirectionFlag": {'Type': 'PyTango.DevBoolean',
-                                  'R/W Type': 'PyTango.READ'},
-        "AmplifierFaultError": {'Type': 'PyTango.DevBoolean',
-                                'R/W Type': 'PyTango.READ'},
-        "FatalFollowingError": {'Type': 'PyTango.DevBoolean',
-                                'R/W Type': 'PyTango.READ'},
-        "WarningFollowingError": {'Type': 'PyTango.DevBoolean',
-                                  'R/W Type': 'PyTango.READ'},
-        "InPosition": {'Type': 'PyTango.DevBoolean',
-                       'R/W Type': 'PyTango.READ'}}
+    axis_attributes = {
+        "MotorActivated": {Type: bool,
+                           Access: DataAccess.ReadOnly},
+        "NegativeEndLimitSet": {Type: bool,
+                                Access: DataAccess.ReadOnly},
+        "PositiveEndLimitSet": {Type: bool,
+                                Access: DataAccess.ReadOnly},
+        "HandwheelEnabled": {Type: bool,
+                             Access: DataAccess.ReadOnly},
+        "PhasedMotor": {Type: bool,
+                        Access: DataAccess.ReadOnly},
+        "OpenLoopMode": {Type: bool,
+                         Access: DataAccess.ReadOnly},
+        "RunningDefine-timeMove": {Type: bool,
+                                   Access: DataAccess.ReadOnly},
+        "IntegrationMode": {Type: bool,
+                            Access: DataAccess.ReadOnly},
+        "DwellInProgress": {Type: bool,
+                            Access: DataAccess.ReadOnly},
+        "DataBlockError": {Type: bool,
+                           Access: DataAccess.ReadOnly},
+        "DesiredVelocityZero": {Type: bool,
+                                Access: DataAccess.ReadOnly},
+        "AbortDeceleration": {Type: bool,
+                              Access: DataAccess.ReadOnly},
+        "BlockRequest": {Type: bool,
+                         Access: DataAccess.ReadOnly},
+        "HomeSearchInProgress": {Type: bool,
+                                 Access: DataAccess.ReadOnly},
+        "AssignedToCoordinateSystem": {Type: bool,
+                                       Access: DataAccess.ReadOnly},
+        "CoordinateSystem": {Type: int,
+                             Access: DataAccess.ReadOnly},
+        "AmplifierEnabled": {Type: bool,
+                             Access: DataAccess.ReadWrite},
+        "StoppedOnPositionLimit": {Type: bool,
+                                   Access: DataAccess.ReadOnly},
+        "HomeComplete": {Type: bool,
+                         Access: DataAccess.ReadOnly},
+        "PhasingSearchError": {Type: bool,
+                               Access: DataAccess.ReadOnly},
+        "TriggerMove": {Type: bool,
+                        Access: DataAccess.ReadOnly},
+        "IntegratedFatalFollowingError": {Type: bool,
+                                          Access: DataAccess.ReadOnly},
+        "I2T_amplifierFaultError": {Type: bool,
+                                    Access: DataAccess.ReadOnly},
+        "BacklashDirectionFlag": {Type: bool,
+                                  Access: DataAccess.ReadOnly},
+        "AmplifierFaultError": {Type: bool,
+                                Access: DataAccess.ReadOnly},
+        "FatalFollowingError": {Type: bool,
+                                Access: DataAccess.ReadOnly},
+        "WarningFollowingError": {Type: bool,
+                                  Access: DataAccess.ReadOnly},
+        "InPosition": {Type: bool,
+                       Access: DataAccess.ReadOnly},
 
-    cs_extra_attributes = {"MotionProgramRunning": {
-        'Type': 'PyTango.DevBoolean', 'R/W Type': 'PyTango.READ'}}
-
-    ctrl_extra_attributes = {}
-    ctrl_extra_attributes.update(motor_extra_attributes)
-    ctrl_extra_attributes.update(cs_extra_attributes)
+        "MotionProgramRunning": {Type: bool,
+                                 Access: DataAccess.ReadOnly}
+    }
 
     def __init__(self, inst, props, *args, **kwargs):
         MotorController.__init__(self, inst, props,  *args, **kwargs)
@@ -294,13 +293,14 @@ class PmacController(MotorController):
         for axis, position in list(self.startMultiple.items()):
             self.pmacEth.command_inout("JogToPos", [axis, position])
 
-    def SetPar(self, axis, name, value):
+    def SetAxisPar(self, axis, parameter, value):
         """ Set the standard pool motor parameters.
         @param axis to set the parameter
-        @param name of the parameter
+        @param parameter is the parameter's name
         @param value to be set
         """
-        if name.lower() == "velocity":
+        name = parameter.lower()
+        if name == "velocity":
             pmacVelocity = (value * self.attributes[axis]["step_per_unit"]) / 1000
             self._log.debug("setting velocity to: %f" % pmacVelocity)
             ivar = int("%d22" % axis)
@@ -314,7 +314,7 @@ class PmacController(MotorController):
                                 axis, name, value, ivar, pmacVelocity)
                 raise
 
-        elif name.lower() == "acceleration" or name.lower() == "deceleration":
+        elif name == "acceleration" or name == "deceleration":
             # here we convert acceleration time from sec(Sardana standard) to
             # msec(TurboPmac expected unit)
             pmacAcceleration = value * 1000
@@ -328,19 +328,20 @@ class PmacController(MotorController):
                                 " called on PmacEth DeviceProxy failed.",
                                 axis, name, value, ivar, pmacAcceleration)
                 raise
-        elif name.lower() == "step_per_unit":
+        elif name == "step_per_unit":
             self.attributes[axis]["step_per_unit"] = float(value)
-        elif name.lower() == "base_rate":
+        elif name == "base_rate":
             self.attributes[axis]["base_rate"] = float(value)
         # @todo implement base_rate
 
-    def GetPar(self, axis, name):
+    def GetAxisPar(self, axis, parameter):
         """ Get the standard pool motor parameters.
         @param axis to get the parameter
-        @param name of the parameter to get the value
+        @param parameter to get the value
         @return the value of the parameter
         """
-        if name.lower() == "velocity":
+        name = parameter.lower()
+        if name == "velocity":
             ivar = int("%d22" % axis)
             try:
                 pmacVelocity = self.pmacEth.command_inout("GetIVariable", ivar)
@@ -355,7 +356,7 @@ class PmacController(MotorController):
                 self.attributes[axis]["step_per_unit"]
             return sardanaVelocity
 
-        elif name.lower() == "acceleration" or name.lower() == "deceleration":
+        elif name == "acceleration" or name == "deceleration":
             # pmac acceleration time from msec(returned by TurboPmac)
             # to sec(Sardana standard)
             ivar = int("%d20" % axis)
@@ -370,10 +371,10 @@ class PmacController(MotorController):
             sardanaAcceleration = float(pmacAcceleration) / 1000
             return sardanaAcceleration
 
-        elif name.lower() == "step_per_unit":
+        elif name == "step_per_unit":
             return self.attributes[axis]["step_per_unit"]
             # @todo implement base_rate
-        elif name.lower() == "base_rate":
+        elif name == "base_rate":
             return self.attributes[axis]["base_rate"]
         else:
             return None
@@ -389,21 +390,21 @@ class PmacController(MotorController):
     def DefinePosition(self, axis, value):
         pass
 
-    def GetExtraAttributePar(self, axis, name):
+    def GetAxisExtraPar(self, axis, parameter):
         """ Get Pmac axis particular parameters.
         @param axis to get the parameter
-        @param name of the parameter to retrive
+        @param parameter to retrive
         @return the value of the parameter
         """
-        return self.attributes[axis][name]
+        return self.attributes[axis][parameter]
 
-    def SetExtraAttributePar(self, axis, name, value):
+    def SetAxisExtraPar(self, axis, parameter, value):
         """ Set Pmac axis particular parameters.
         @param axis to set the parameter
-        @param name of the parameter
+        @param parameter name
         @param value to be set
         """
-        name = name.lower()
+        name = parameter.lower()
         if name == "amplifierenabled":
             if value:
                 self.pmacEth.command_inout("JogStop", [axis])
