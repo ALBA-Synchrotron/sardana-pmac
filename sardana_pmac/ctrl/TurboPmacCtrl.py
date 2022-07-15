@@ -201,7 +201,7 @@ class TurboPmacController(MotorController):
                             "PmacEth DeviceProxy failed.")
             self.pmacEthOk = False
             return
-        motStateBinArray = [map(int, s, len(s) * [16])
+        motStateBinArray = [list(map(int, s, len(s) * [16]))
                             for s in motStateAns.split()]
 
         try:
@@ -211,7 +211,7 @@ class TurboPmacController(MotorController):
                             "PmacEth DeviceProxy failed.")
             self.pmacEthOk = False
             return
-        csStateBinArray = [map(int, s, len(s) * [16])
+        csStateBinArray = [list(map(int, s, len(s) * [16]))
                            for s in csStateAns.split()]
 
         for axis in self.axesList:
@@ -365,7 +365,7 @@ class TurboPmacController(MotorController):
         pass
 
     def StartAll(self):
-        for axis, position in self.startMultiple.items():
+        for axis, position in list(self.startMultiple.items()):
             position *= self.attributes[axis]["step_per_unit"]
             self.pmacEth.command_inout("JogToPos", [axis, position])
 
@@ -418,7 +418,7 @@ class TurboPmacController(MotorController):
         @return the value of the parameter
         """
         if name.lower() == "velocity":
-            ivar = long("%d22" % axis)
+            ivar = int("%d22" % axis)
             try:
                 pmacVelocity = self.pmacEth.command_inout("GetIVariable", ivar)
             except PyTango.DevFailed:
@@ -433,9 +433,9 @@ class TurboPmacController(MotorController):
             return sardanaVelocity
 
         elif name.lower() == "acceleration" or name.lower() == "deceleration":
-                # pmac acceleration time from msec(returned by TurboPmac) to
-                # sec(Sardana standard)
-            ivar = long("%d20" % axis)
+            # pmac acceleration time from msec(returned by TurboPmac) to
+            # sec(Sardana standard)
+            ivar = int("%d20" % axis)
             try:
                 pmacAcceleration = self.pmacEth.command_inout(
                     "GetIVariable", ivar)
