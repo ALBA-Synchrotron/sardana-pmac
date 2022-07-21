@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="sardana-alba",
+    name="sardana-pmac",
     version="0.2.0",
     description="Pmac Sardana plugins (controllers, macros, tools)",
     author="ALBA controls team",
