@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sardana-pmac",
-    version="0.2.1",
+    version="0.2.2",
     description="Pmac Sardana plugins (controllers, macros, tools)",
     author="ALBA controls team",
     author_email="controls@cells.es",
