@@ -34,6 +34,7 @@
 
 import PyTango
 from sardana_pmac.ctrl.PmacCtrl import PmacController
+from sardana.pool.controller import Type, Access, DataAccess
 
 
 class PmacLTPController(PmacController):
@@ -42,9 +43,10 @@ class PmacLTPController(PmacController):
     controller device in LTP.
     """
 
-    ctrl_extra_attributes = dict(PmacController.ctrl_extra_attributes)
-    ctrl_extra_attributes['FeedbackMode'] = {
-        'Type': 'PyTango.DevLong', 'R/W Type': 'PyTango.READ_WRITE'}
+    axis_attributes = dict(PmacController.axis_attributes)
+    axis_attributes['FeedbackMode'] = {
+        Type: int,
+        Access: DataAccess.ReadWrite}
 
     def __init__(self, inst, props):
         PmacController.__init__(self, inst, props)
@@ -76,10 +78,7 @@ class PmacLTPController(PmacController):
             status = '''\nMotor's amplifier is not enabled'''
         return state, status, switchstate
 
-    def GetPar(self, axis, name):
-        return self._superklass.GetPar(self, axis, name)
-
-    def GetExtraAttributePar(self, axis, name):
+    def GetAxisExtraPar(self, axis, name):
         """ Get Pmac axis particular parameters.
         @param axis to get the parameter
         @param name of the parameter to retrive
@@ -124,9 +123,9 @@ class PmacLTPController(PmacController):
                     "Axis nr 2 does not support various feedback mode.",
                     "PmacLTPCtrl.GetExtraAttribute()")
         else:
-            return self._superklass.GetExtraAttributePar(self, axis, name)
+            return self._superklass.GetAxisExtraPar(self, axis, name)
 
-    def SetExtraAttributePar(self, axis, name, value):
+    def SetAxisExtraPar(self, axis, name, value):
         """ Set Pmac axis particular parameters.
         @param axis to set the parameter
         @param name of the parameter
@@ -161,4 +160,4 @@ class PmacLTPController(PmacController):
 
                 return
         else:
-            self._superklass.SetExtraAttributePar(self, axis, name, value)
+            self._superklass.SetAxisExtraPar(self, axis, name, value)
