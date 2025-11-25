@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="sardana-pmac",
+    name="sardana_pmac",
     version="0.2.2",
     description="Pmac Sardana plugins (controllers, macros, tools)",
     author="ALBA controls team",
@@ -10,6 +10,5 @@ setup(
     license="GPLv3",
     url="http://github.com/ALBA-Synchrotron/sardana-pmac",
     packages=find_packages(),
-    install_requires=["sardana", ],
-    python_requires=">=3.5",
+    install_requires=["sardana", "setuptools"],
 )
