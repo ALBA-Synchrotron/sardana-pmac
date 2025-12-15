@@ -1,2 +1,2 @@
-# sardana-pmac
-Sardana plugins for Pmac controllers
+## sardana-pmac moved to https://gitlab.com/sardana-org/sardana-pmac
+
